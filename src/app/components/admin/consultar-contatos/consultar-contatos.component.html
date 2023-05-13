@@ -1,0 +1,132 @@
+<div class="card m-4">
+    <div class="card-body">
+
+
+        <h5>Consulta de contatos</h5>
+        <p>Listagem de contatos cadastrados em sua agenda.</p>
+        <hr />
+
+
+        <div *ngIf="mensagem" class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <strong>{{mensagem}}</strong>
+            <button type="button" class="btn-close" aria-label="Close" (click)="mensagem = ''">
+            </button>
+        </div>
+
+
+        <div class="row mb-2" *ngIf="contatos.length > 0">
+            <div class="col-md-4">
+                <input type="text" name="nome" placeholder="Pesquisar contatos por nome" class="form-control"
+                    autocomplete="off" [(ngModel)]="filtro.nome" />
+            </div>
+        </div>
+
+
+        <div *ngIf="contatos.length > 0" class="table-responsive">
+
+
+            <table class="table table-sm table-stripped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome do contato</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Cadastrado em</th>
+                        <th [width]="140">Operações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let c of contatos | filterBy: filtro | paginate: { itemsPerPage: 5, currentPage : pagina }">
+                        <td>{{c.nome | uppercase}}</td>
+                        <td>{{c.email | lowercase}}</td>
+                        <td>{{c.telefone | mask : '(00)00000-0000'}}</td>
+                        <td>{{c.dataCriacao | date: 'dd/MM/yyyy'}}</td>
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm"
+                                [routerLink]="['/editar-contatos', c.idContato]">
+                                Editar
+                            </button>
+                            &nbsp;
+                            <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#contatoModal" (click)="setContato(c)">
+                                Excluir
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            Quantidade de contatos: {{(contatos | filterBy: filtro).length}}
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+            <div class="text-center">
+                <pagination-controls (pageChange)="pageChange($event)" previousLabel="Página anterior"
+                    nextLabel="Próxima página">
+                </pagination-controls>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<!-- modal para exclusão do contato -->
+<div class="modal fade" id="contatoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Exclusão de Contato</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+
+                <div class="mb-2">
+                    Nome do contato: <br />
+                    <strong>{{contato?.nome | uppercase}}</strong>
+                </div>
+
+
+                <div class="mb-2">
+                    Email: <br />
+                    <strong>{{contato?.email | lowercase}}</strong>
+                </div>
+
+
+                <div class="mb-2">
+                    Telefone: <br />
+                    <strong>{{contato?.telefone}}</strong>
+                </div>
+
+
+                <div class="mb-2">
+                    Cadastrado em: <br />
+                    <strong>{{contato?.dataCriacao | date: 'dd/MM/yyyy'}}</strong>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-danger"
+                    (click)="onDelete()" data-bs-dismiss="modal">
+                    Confirmar Exclusão
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

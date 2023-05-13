@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-sm-6 col-md-4">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Acessar Sistema</h2>
+                    <p class="text-center">Preencha os campos para realizar o acesso.</p>
+                    <hr />
+
+                    <div *ngIf="mensagem" class="alert alert-secondary alert-dismissible fade show" role="alert">
+                        <strong>{{mensagem}}</strong>
+                        <button type="button" class="btn-close" aria-label="Close" (click)="mensagem = ''">
+                        </button>
+                    </div>
+
+                    <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+
+                        <div class="form-group mb-2">
+                            <label for="email">Informe seu email de acesso:</label>
+                            <input type="email" class="form-control" placeholder="Digite seu e-mail"
+                                formControlName="email" />
+                            <span class="text-danger" *ngIf="form.email.touched && form.email.invalid">
+                                <span *ngIf="form.email.errors.required">
+                                    Por favor, informe o seu email.
+                                </span>
+                                <span *ngIf="form.email.errors.email">
+                                    Por favor, informe um endereço de email válido.
+                                </span>
+                            </span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="senha">Informe sua senha de acesso:</label>
+                            <input type="password" class="form-control" placeholder="Digite sua senha"
+                                formControlName="senha" />
+                            <span class="text-danger" *ngIf="form.senha.touched && form.senha.invalid">
+                                <span *ngIf="form.senha.errors.required">
+                                    Por favor, informe a sua senha.
+                                </span>
+                                <span *ngIf="form.senha.errors.pattern">
+                                    Por favor, informe uma senha com pelo menos 1 letra maiúscula,
+                                    1 letra minúscula, 1 dígito numérico, 1 caractere especial e
+                                    de 8 a 20 caracteres.
+                                </span>
+                            </span>
+                            <div class="text-end">
+                                <a [routerLink]="['/password-recover']">
+                                    Esqueci minha senha?
+                                </a>
+                            </div>
+                        </div>
+                        <div class="d-grid mb-2">
+                            <button type="submit" class="btn btn-primary btn-block" [disabled]="!formLogin.valid">
+                                Entrar
+                            </button>
+                        </div>
+                        <div class="d-grid mb-2">
+                            <a [routerLink]="['/register']" class="btn btn-light">
+                                Não possui conta? <strong>Cadastre-se aqui!</strong>
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

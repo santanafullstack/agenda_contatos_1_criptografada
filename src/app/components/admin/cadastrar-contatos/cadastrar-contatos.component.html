@@ -1,0 +1,70 @@
+<div class="card m-4">
+    <div class="card-body">
+
+
+        <h5>Cadastro de contatos</h5>
+        <p>Preencha os campos para incluir um contato.</p>
+        <hr />
+
+
+        <div *ngIf="mensagem" class="alert alert-secondary alert-dismissible fade show" role="alert">
+            <strong>{{mensagem}}</strong>
+            <button type="button" class="btn-close" aria-label="Close" (click)="mensagem = ''">
+            </button>
+        </div>
+
+
+        <form [formGroup]="formCadastro" (ngSubmit)="onSubmit()">
+
+
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <label>Nome do contato:</label>
+                    <input type="text" formControlName="nome" class="form-control" placeholder="Ex: João da Silva" />
+                    <span class="text-danger" *ngIf="form.nome.touched && form.nome.invalid">
+                        <span *ngIf="form.nome.errors.required">
+                            Por favor, informe o nome do contato.
+                        </span>
+                        <span *ngIf="form.nome.errors.minlength">
+                            Por favor, informe no mínimo 8 caracteres.
+                        </span>
+                        <span *ngIf="form.nome.errors.maxlength">
+                            Por favor, informe no máximo 150 caracteres.
+                        </span>
+                    </span>
+                </div>
+                <div class="col-md-3">
+                    <label>Email:</label>
+                    <input type="text" formControlName="email" class="form-control"
+                        placeholder="Ex: joaosilva@gmail.com" />
+                    <span class="text-danger" *ngIf="form.email.touched && form.email.invalid">
+                        <span *ngIf="form.email.errors.required">
+                            Por favor, informe o email do contato.
+                        </span>
+                        <span *ngIf="form.email.errors.email">
+                            Por favor, informe um endereço de email válido.
+                        </span>
+                    </span>
+                </div>
+                <div class="col-md-3">
+                    <label>Telefone:</label>
+                    <input type="text" formControlName="telefone" class="form-control"
+                        placeholder="Ex: (21)99999-0000" mask="(00)00000-0000" />
+                    <span class="text-danger" *ngIf="form.telefone.touched && form.telefone.invalid">
+                        <span *ngIf="form.telefone.errors.required">
+                            Por favor, informe o telefone do contato.
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <input type="submit" [disabled]="!formCadastro.valid" class="btn btn-success btn-sm"
+                        value="Realizar Cadastro" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
